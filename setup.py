@@ -5,7 +5,7 @@ setup(
     name='geontology',
     version='0.1.0',
     packages=find_packages(exclude=["tests"]),
-    url='http://github.ugent.be/cpvghelu/geontology',
+    url='http://github.com/caspervg/geontology',
     license='MIT',
     author='Casper Van Gheluwe',
     author_email='casper.vangheluwe@ugent.be',
