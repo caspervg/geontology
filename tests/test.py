@@ -1,4 +1,4 @@
-from geontology import GeoOntology
+from geontology.geontology import GeoOntology
 
 ont = GeoOntology("tests/ontologie.ttl", frmt='n3')
 
@@ -22,10 +22,19 @@ assert """<http://move.ugent.be/geodata/ontology/work/data/column/speed> a :Info
     :type "integer" .""" in serialized
 
 ont.add_info_column("work1", "data1", "http://linkedgeodata.org/ontology/maxspeed", name="speed", type="integer",
-                    desc="Maximum allowed speed 2")
+                    desc="Maximum allowed speed 2", unit="http://purl.obolibrary.org/obo/UO_0000094")
 
 results = ont.get_columns("work", "data")
 assert len(results) == 2
 
 results = ont.get_columns()
 assert len(results) == 3
+
+serialized = ont.serialize()
+
+assert """<http://move.ugent.be/geodata/ontology/work1/data1/column/speed> a :InfoColumn ;
+    :defines <http://linkedgeodata.org/ontology/maxspeed> ;
+    :description "Maximum allowed speed 2" ;
+    :name "speed" ;
+    :type "integer" ;
+    :unit [ a <http://purl.obolibrary.org/obo/UO_0000094> ] .""" in serialized

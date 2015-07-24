@@ -1,4 +1,4 @@
-from rdflib import Graph, Namespace, URIRef, RDF, Literal, RDFS
+from rdflib import Graph, Namespace, URIRef, RDF, Literal, RDFS, BNode
 from rdflib.plugins.sparql import prepareQuery
 
 _GEO_NAMESPACE = 'http://move.ugent.be/geodata/ontology/'
@@ -29,7 +29,7 @@ class GeoOntology:
             'PointFeature': self.namespace.PointFeature
         }
 
-    def add_info_column(self, workspace, data, defines, name='column', type='string', desc='No description'):
+    def add_info_column(self, workspace, data, defines, name='column', type='string', desc='No description', unit=None):
         """
         Adds an InfoColumn to the graph
         :param workspace: Name of the workspace of the column (for namespacing)
@@ -47,6 +47,11 @@ class GeoOntology:
         self.graph.add((col, self.namespace.defines, URIRef(defines)))
         self.graph.add((col, self.namespace.description, Literal(desc)))
         self.graph.add((col, self.namespace.type, Literal(type)))
+
+        if unit is not None:
+            unit_instance = BNode()
+            self.graph.add((unit_instance, RDF.type, URIRef(unit)))
+            self.graph.add((col, self.namespace.unit, unit_instance))
 
     def add_geo_column(self, workspace, data, defines, name='column', field1=None, field2=None,
                        type='LineFeature', desc='No description'):
