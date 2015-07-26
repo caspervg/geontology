@@ -1,4 +1,4 @@
-from geontology.geontology import GeoOntology
+from geontology import GeoOntology
 
 ont = GeoOntology("tests/ontologie.ttl", frmt='n3')
 
