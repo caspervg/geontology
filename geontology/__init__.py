@@ -76,6 +76,7 @@ class GeoOntology:
             self.graph.add((col, self.namespace.name, Literal(name)))
         else:
             self.graph.add((col, RDF.type, self.namespace.DuoGeoColumn))
+            self.graph.add((col, self.namespace.name, Literal(name)))
             self.graph.add((col, self.namespace.name1, Literal(field1)))
             self.graph.add((col, self.namespace.name2, Literal(field2)))
 

@@ -12,6 +12,7 @@ serialized = ont.serialize()
 assert """<http://move.ugent.be/geodata/ontology/work/data/column/location> a :DuoGeoColumn ;
     :defines <http://linkedgeodata.org/ontology/OilPlatform> ;
     :description "Oil platforms" ;
+    :name "location" ;
     :name1 "lat" ;
     :name2 "lon" ;
     :type "http://move.ugent.be/geodata/ontology/PointFeature" .""" in serialized
