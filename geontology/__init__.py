@@ -26,7 +26,8 @@ class GeoOntology:
 
         self.featureTypes = {
             'LineFeature': self.namespace.LineFeature,
-            'PointFeature': self.namespace.PointFeature
+            'PointFeature': self.namespace.PointFeature,
+            'PolygonFeature': self.namespace.PolygonFeature
         }
 
     def add_info_column(self, workspace, data, defines, name='column', type='string', desc='No description', unit=None):
