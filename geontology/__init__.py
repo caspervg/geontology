@@ -1,7 +1,19 @@
+import json
 from rdflib import Graph, Namespace, URIRef, RDF, Literal, RDFS, BNode
-from rdflib.plugins.sparql import prepareQuery
+from collections import defaultdict
 
 _GEO_NAMESPACE = 'http://move.ugent.be/geodata/ontology/'
+
+
+def recursive_defaultdict():
+    return defaultdict(recursive_defaultdict)
+
+
+def setpath(d, p, k):
+    if len(p) == 1:
+        d[p[0]] = k
+    else:
+        setpath(d[p[0]], p[1:], k)
 
 
 class GeoOntology:
@@ -73,12 +85,12 @@ class GeoOntology:
         if field1 is None or field2 is None:
             # It's a column backed by only one field
             self.graph.add((col, RDF.type, self.namespace.UniGeoColumn))
-            self.graph.add((col, self.namespace.name, Literal(name)))
+            self.graph.add((col, self.namespace.field, Literal(name)))
         else:
             self.graph.add((col, RDF.type, self.namespace.DuoGeoColumn))
-            self.graph.add((col, self.namespace.name, Literal(name)))
-            self.graph.add((col, self.namespace.name1, Literal(field1)))
-            self.graph.add((col, self.namespace.name2, Literal(field2)))
+            self.graph.add((col, self.namespace.field, Literal(name)))
+            self.graph.add((col, self.namespace.field1, Literal(field1)))
+            self.graph.add((col, self.namespace.field2, Literal(field2)))
 
         self.graph.add((col, self.namespace.defines, URIRef(defines)))
         self.graph.add((col, self.namespace.description, Literal(desc)))
@@ -96,27 +108,31 @@ class GeoOntology:
         else:
             return self.graph.serialize(format=frmt)
 
-    def get_columns(self, workspace=None, data=None):
-        """
-        Uses a SPARQL query to retrieve all columns in given workspace and dataset.
-        If both workspace and data are left empty, all columns in the graph will be returned
-        :param workspace: Name of the workspace
-        :param data: Name of the dataset
-        :return:
-        """
-        ns = self.namespace
+    def get_columns(self, info=True, geo=True):
+        result = recursive_defaultdict()
 
-        if workspace is not None:
-            ns = ns + workspace
-            if data is not None:
-                ns = ns + "/" + data
+        if info:
+            for s, p, o in self.graph.triples((None, RDFS.subClassOf, URIRef(_GEO_NAMESPACE + 'InfoColumn'))):
+                for _s, _p, _o in self.graph.triples((None, RDF.type, s)):
+                    for __s, __p, __o in self.graph.triples((_s, None, None)):
+                        result['info'][_s][__p] = __o
+        if geo:
+            for s, p, o in self.graph.triples((None, RDFS.subClassOf, URIRef(_GEO_NAMESPACE + 'GeoColumn'))):
+                for _s, _p, _o in self.graph.triples((None, RDF.type, s)):
+                    for __s, __p, __o in self.graph.triples((_s, None, None)):
+                        result['geo'][_s][__p] = __o
 
-        qry = prepareQuery("""
-        SELECT DISTINCT ?entity
-        WHERE {
-            ?entity rdf:type ?type .
-            ?type rdfs:subClassOf* :Column .
-            FILTER(STRSTARTS(STR(?entity), \"""" + ns + """")) .
-        }""", initNs={"rdf": RDF, "rdfs": RDFS, "": self.namespace})
+    def set_fields(self, column, field=None, field1=None, field2=None):
+        if column.startswith(_GEO_NAMESPACE):
+            # Name space is already included in the name
+            col_ref = URIRef(column)
+        else:
+            col_ref = URIRef(_GEO_NAMESPACE + "column#" + column)
 
-        return self.graph.query(qry)
+        if field is not None:
+            self.graph.add((col_ref, self.namespace.field, Literal(field)))
+        elif field1 is not None and field2 is not None:
+            self.graph.add((col_ref, self.namespace.field1, Literal(field1)))
+            self.graph.add((col_ref, self.namespace.field2, Literal(field2)))
+        else:
+            raise AssertionError("If field is none, field1 and field2 should not be none")
