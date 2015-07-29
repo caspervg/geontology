@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='geontology',
-    version='0.3.3',
+    version='0.3.4',
     packages=find_packages(exclude=["tests"]),
     url='http://github.com/caspervg/geontology',
     license='MIT',

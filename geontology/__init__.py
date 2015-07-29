@@ -35,6 +35,8 @@ class GeoOntology:
         self.graph.parse(path, format=frmt)
         self.frmt = frmt
         self.namespace = Namespace(namespace)
+        self.column_ns = Namespace(namespace + 'column#')
+        self.property_ns = Namespace(namespace + 'property#')
 
         self.featureTypes = {
             'LineFeature': self.namespace.LineFeature,
@@ -42,7 +44,7 @@ class GeoOntology:
             'PolygonFeature': self.namespace.PolygonFeature
         }
 
-    def add_info_column(self, workspace, data, defines, name='column', type='string', desc='No description', unit=None):
+    def add_info_column(self, workspace, data, defines, name='column', field='column', type='string', desc='No description', unit=None):
         """
         Adds an InfoColumn to the graph
         :param workspace: Name of the workspace of the column (for namespacing)
@@ -57,6 +59,7 @@ class GeoOntology:
 
         self.graph.add((col, RDF.type, self.namespace.InfoColumn))
         self.graph.add((col, self.namespace.name, Literal(name)))
+        self.graph.add((col, self.namespace.field, Literal(field)))
         self.graph.add((col, self.namespace.defines, URIRef(defines)))
         self.graph.add((col, self.namespace.description, Literal(desc)))
         self.graph.add((col, self.namespace.type, Literal(type)))
@@ -122,6 +125,8 @@ class GeoOntology:
                     for __s, __p, __o in self.graph.triples((_s, None, None)):
                         result['geo'][_s][__p] = __o
 
+        return result
+
     def set_fields(self, column, field=None, field1=None, field2=None):
         if column.startswith(_GEO_NAMESPACE):
             # Name space is already included in the name
@@ -130,9 +135,9 @@ class GeoOntology:
             col_ref = URIRef(_GEO_NAMESPACE + "column#" + column)
 
         if field is not None:
-            self.graph.add((col_ref, self.namespace.field, Literal(field)))
+            self.graph.add((col_ref, self.property_ns.field, Literal(field)))
         elif field1 is not None and field2 is not None:
-            self.graph.add((col_ref, self.namespace.field1, Literal(field1)))
-            self.graph.add((col_ref, self.namespace.field2, Literal(field2)))
+            self.graph.add((col_ref, self.property_ns.field1, Literal(field1)))
+            self.graph.add((col_ref, self.property_ns.field2, Literal(field2)))
         else:
             raise AssertionError("If field is none, field1 and field2 should not be none")
