@@ -1,0 +1,343 @@
+@prefix : <http://move.ugent.be/geodata/ontology/> .
+@prefix col: <http://move.ugent.be/geodata/ontology/column#> .
+@prefix prop: <http://move.ugent.be/geodata/ontology/property#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema/> .
+@prefix db: <http://dbpedia.org/resource/Category:> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos> .
+
+# ----------------- #
+# Class definitions #
+# ----------------- #
+
+:Column          rdf:type          rdfs:Class .
+  
+:InfoColumn      rdf:type          rdfs:Class ;
+                 rdfs:subClassOf   :Column .
+
+:GeoColumn       rdf:type          rdfs:Class ;
+                 rdfs:subClassOf   :Column .
+
+# ------------------ #
+# :Column properties #
+# ------------------ #
+
+prop:name        rdf:type          rdf:Property ;
+                 rdfs:domain       :Column ;
+                 rdfs:range        xsd:string .
+
+prop:defines     rdf:type          rdf:Property ;
+                 rdfs:domain       :Column .
+
+prop:description rdf:type          rdf:Property ;
+                 rdfs:domain       :Column ;
+                 rdfs:range        xsd:string .
+
+prop:field       rdf:type          rdf:Property ;
+                 rdfs:domain       :Column ;
+                 rdfs:range        xsd:string .
+
+# ---------------------- #
+# :InfoColumn properties #
+# ---------------------- #
+
+prop:type        rdf:type          rdf:Property ;
+                 rdfs:domain       :InfoColumn ;
+                 rdfs:range        xsd:string ;
+                 owl:oneOf         ("integer" "integer_list" "real" "real_list" "string" "string_list" "binary" "date" "datetime") .
+
+prop:unit        rdf:type          rdf:Property ;
+                 rdfs:domain       :InfoColumn ;
+                 rdfs:range        <http://purl.obolibrary.org/obo/UO_0000000> .
+
+# ------------ #
+# :FeatureType #
+# ------------ #
+
+:FeatureType     rdf:type          rdfs:Class .
+                 
+prop:name        rdf:type          rdf:Property ;
+                 rdfs:domain       :FeatureType ;
+                 rdfs:range        xsd:string ;
+                 owl:oneOf         ("wkb_linestring" "wkb_point" "wkb_unknown" "wkb_polygon") .
+
+:LineFeature     rdf:type          :FeatureType ;
+                 :name             "wkb_linestring" .
+
+:PointFeature    rdf:type          :FeatureType ;
+                 :name             "wkb_point" .
+
+:PolygonFeature  rdf:type          :FeatureType ;
+                 :name             "wkb_polygon" .
+ 
+# --------------------- #
+# :GeoColumn properties #
+# --------------------- #
+
+prop:type        rdf:type          rdf:Property ;
+                 rdfs:domain       :GeoColumn ;
+                 owl:oneOf         (:LineFeature :PointFeature :PolygonFeature) .
+
+:DuoGeoColumn    rdf:type          rdfs:Class ;
+                 rdfs:subClassOf   :GeoColumn .
+
+:UniGeoColumn    rdf:type          rdfs:Class ;
+                 rdfs:subClassOf   :GeoColumn .
+
+prop:field1      rdf:type          rdf:Property ;
+                 rdfs:domain       :DuoGeoColumn ;
+                 rdfs:range        xsd:string .
+
+prop:field2      rdf:type          rdf:Property ;
+                 rdfs:domain       :DuoGeoColumn ;
+                 rdfs:range        xsd:string .
+
+# ----------- #
+# Definitions #
+# ----------- #
+
+:DataSet             rdf:type          rdfs:Class .
+
+:TripDataSet         rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :DataSet .
+
+:PointTripDataSet    rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :TripDataSet .
+
+:TripOverviewDataSet rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :TripDataSet .
+
+:LineTripDataSet     rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :TripDataSet .
+
+:AccuracyColumn      rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:HeadingColumn       rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:PurposeColumn       rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:CurrentSpeedColumn  rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:TransportModeColumn rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:StartTimeColumn     rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:StopTimeColumn      rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:CurrentTimeColumn   rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:CurrentLocationColumn rdf:type        rdfs:Class ;
+                     rdfs:subClassOf   :GeoColumn .
+
+:TripIdColumn        rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:DestinationAddressColumn rdf:type     rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:OriginAddressColumn rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:AverageSpeedColumn  rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+
+:TitleColumn         rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:AverageSpeedColumn  rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:TotalDistanceColumn rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:OriginLocationColumn rdf:type         rdfs:Class ;
+                     rdfs:subClassOf   :GeoColumn .
+
+:DestinationLocationColumn rdf:type    rdfs:Class ;
+                     rdfs:subClassOf   :GeoColumn .
+
+:RouteIdColumn       rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:UserIdColumn        rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :InfoColumn .
+
+:ItineraryColumn     rdf:type          rdfs:Class ;
+                     rdfs:subClassOf   :GeoColumn .
+
+ # ------- #
+ # Columns #
+ # ------- #
+
+ col:Accuracy a :AccuracyColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/PositionalAccuracy> ;
+     prop:description "Accuracy of the measurement at this point" ;
+     prop:name "accuracy" ;
+     prop:type "real" .
+
+ col:Heading a :HeadingColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/HeadingAngle> ;
+     prop:description "Heading at this point" ;
+     prop:name "heading" ;
+     prop:type "real" ;
+     prop:unit [ a <http://purl.obolibrary.org/obo/UO_0000123> ] . # TODO: degrees!
+
+ col:Purpose a :PurposeColumn ;
+     prop:defines <http://purl.org/dc/terms/type> ; # TODO: definition!
+     prop:description "Purpose of the trip" ;
+     prop:name "purpose" ;
+     prop:type "string" .
+
+ col:CurrentSpeed a :CurrentSpeedColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/MeanMotion> ;
+     prop:description "Speed at this point" ;
+     prop:name "current_speed" ;
+     prop:type "real" ;
+     prop:unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#KilometerPerHour> ] .
+
+ col:TransportMode a :TransportModeColumn ;
+     prop:defines <http://purl.org/dc/terms/type> ; # TODO: definition!
+     prop:description "Transport mode of the trip" ;
+     prop:name "transportmode" ;
+     prop:type "string" .
+
+ col:StartTime a :StartTimeColumn ;
+     prop:defines <http://purl.org/dc/terms/date> ;
+     prop:description "Start time of the trip" ;
+     prop:name "starttime" ;
+     prop:type "datetime" .
+
+ col:StopTime a :StopTimeColumn ;
+     prop:defines <http://purl.org/dc/terms/date> ;
+     prop:description "End time" ;
+     prop:name "stoptime" ;
+     prop:type "datetime" .
+
+ col:CurrentTime a :CurrentTimeColumn ;
+     prop:defines <http://purl.org/dc/terms/date> ;
+     prop:description "Time at this point" ;
+     prop:name "time" ;
+     prop:type "datetime" .
+     
+ col:CurrentLocationFull a :CurrentLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Full representation (lat and lon) of the location at this point" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+ col:CurrentLocationLat a :CurrentLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Latitude of the location at this point" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+     
+ col:CurrentLocationLon a :CurrentLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Longitude of the location at this point" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+ col:TripId a :TripIdColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+     prop:description "Identifier of the trip" ;
+     prop:name "trip_id" ;
+     prop:type "string" .
+
+ col:DestinationAddress a :DestinationAddressColumn ;
+     prop:defines <http://purl.org/dc/terms/Location> ;
+     prop:description "Destination address of the trip" ;
+     prop:name "destination_address" ;
+     prop:type "string" .
+
+ col:OriginAddress a :OriginAddressColumn ;
+     prop:defines <http://purl.org/dc/terms/Location> ;
+     prop:description "Origin address of the trip" ;
+     prop:name "origin_address" ;
+     prop:type "string" .
+
+ col:Title a :TitleColumn ;
+     prop:defines <http://purl.org/dc/terms/title> ;
+     prop:description "Name given to the trip by the user" ;
+     prop:name "title" ;
+     prop:type "string" .
+
+ col:AverageSpeed a :AverageSpeedColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/MeanMotion> ;
+     prop:description "Average speed of the trip" ;
+     prop:name "speed" ;
+     prop:type "real" ;
+     prop:unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#KilometerPerHour> ] .
+
+ col:TotalDistance a :TotalDistanceColumn ;
+     prop:defines <http://purl.org/dc/terms/SizeOrDuration> ;
+     prop:description "Distance covered in the trip" ;
+     prop:name "distance" ;
+     prop:type "real" ;
+     prop:unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Kilometer> ] .
+
+ col:OriginLocationFull a :OriginLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Full representation (lat and lon) of the origin of the trip" ;
+     prop:name "origin_location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+     
+ col:OriginLocationLat a :OriginLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Latitude of the origin location" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+     
+ col:OriginLocationLon a :OriginLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Longitude of the origin location" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+ col:DestinationLocationFull a :DestinationLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Full representation (lat and lon) of the destination of the trip" ;
+     prop:name "destination_location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+ col:DestinationLocationLat a :DestinationLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Latitude of the destination location" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+     
+ col:DestinationLocationLon a :DestinationLocationColumn ;
+     prop:defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+     prop:description "Longitude of the destination location" ;
+     prop:name "location" ;
+     prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+ col:RouteId a :RouteIdColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+     prop:description "Identifier of the route" ;
+     prop:name "route_id" ;
+     prop:type "string" .
+
+ col:Itinerary a :ItineraryColumn ;
+     prop:defines <http://geovocab.org/geometry.html#LineString> ;
+     prop:description "Itinerary of the trip" ;
+     prop:name "itinerary" ;
+     prop:type "http://move.ugent.be/geodata/ontology/LineFeature" .
+
+ col:UserId a :UserIdColumn ;
+     prop:defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+     prop:description "Identifier of the user" ;
+     prop:name "user_id" ;
+     prop:type "string" .

@@ -2,39 +2,39 @@ from geontology import GeoOntology
 
 ont = GeoOntology("tests/geo_ontology.ttl", frmt='n3')
 
-ont.add_geo_column("work", "data", "http://linkedgeodata.org/ontology/OilPlatform", name="location", field1="lat",
+ont.add_geo_column("http://linkedgeodata.org/ontology/OilPlatform", name="OilPlatformLocation", field1="lat",
                    field2="lon", type='PointFeature', desc="Oil platforms")
 
-ont.add_info_column("work", "data", "http://linkedgeodata.org/ontology/maxspeed", name="speed", field="speed", type="integer",
+ont.add_info_column("http://linkedgeodata.org/ontology/maxspeed", name="MaxSpeed", field="speed", type="integer",
                     desc="Maximum allowed speed")
 
-serialized = ont.serialize()
-assert """<http://move.ugent.be/geodata/ontology/work/data/column/location> a :DuoGeoColumn ;
-    :defines <http://linkedgeodata.org/ontology/OilPlatform> ;
-    :description "Oil platforms" ;
-    :field "location" ;
-    :field1 "lat" ;
-    :field2 "lon" ;
-    :type "http://move.ugent.be/geodata/ontology/PointFeature" .""" in serialized
-assert """<http://move.ugent.be/geodata/ontology/work/data/column/speed> a :InfoColumn ;
-    :defines <http://linkedgeodata.org/ontology/maxspeed> ;
-    :description "Maximum allowed speed" ;
-    :field "speed" ;
-    :name "speed" ;
-    :type "integer" .""" in serialized
+serialized =  ont.serialize()
+assert """col:OilPlatformLocation a :DuoGeoColumn ;
+    prop:defines <http://linkedgeodata.org/ontology/OilPlatform> ;
+    prop:description "Oil platforms" ;
+    prop:field1 "lat" ;
+    prop:field2 "lon" ;
+    prop:name "oilplatformlocation" ;
+    prop:type "http://move.ugent.be/geodata/ontology/PointFeature" .""" in serialized
+assert """col:MaxSpeed a :InfoColumn ;
+    prop:defines <http://linkedgeodata.org/ontology/maxspeed> ;
+    prop:description "Maximum allowed speed" ;
+    prop:field "speed" ;
+    prop:name "maxspeed" ;
+    prop:type "integer" .""" in serialized
 
-ont.add_info_column("work1", "data1", "http://linkedgeodata.org/ontology/maxspeed", name="speed", field="speed1", type="integer",
+ont.add_info_column("http://linkedgeodata.org/ontology/maxspeed", name="MaxSpeed2", field="speed1", type="integer",
                     desc="Maximum allowed speed 2", unit="http://purl.obolibrary.org/obo/UO_0000094")
 
 serialized = ont.serialize()
 
-assert """<http://move.ugent.be/geodata/ontology/work1/data1/column/speed> a :InfoColumn ;
-    :defines <http://linkedgeodata.org/ontology/maxspeed> ;
-    :description "Maximum allowed speed 2" ;
-    :field "speed1" ;
-    :name "speed" ;
-    :type "integer" ;
-    :unit [ a <http://purl.obolibrary.org/obo/UO_0000094> ] .""" in serialized
+assert """col:MaxSpeed2 a :InfoColumn ;
+    prop:defines <http://linkedgeodata.org/ontology/maxspeed> ;
+    prop:description "Maximum allowed speed 2" ;
+    prop:field "speed1" ;
+    prop:name "maxspeed2" ;
+    prop:type "integer" ;
+    prop:unit [ a <http://purl.obolibrary.org/obo/UO_0000094> ] .""" in serialized
 
 ont.set_fields('Accuracy', field='my_acc_field')
 

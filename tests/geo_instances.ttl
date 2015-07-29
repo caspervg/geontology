@@ -1,0 +1,138 @@
+@prefix : <http://move.ugent.be/geodata/ontology/> .
+@prefix col: <http://move.ugent.be/geodata/ontology/column#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema/> .
+@prefix db: <http://dbpedia.org/resource/Category:> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos> .
+
+# ------- #
+# Columns #
+# ------- #
+
+col:Accuracy a :AccuracyColumn ;
+    :defines <http://sensorml.com/ont/swe/property/PositionalAccuracy> ;
+    :description "Accuracy of the measurement at this point" ;
+    :name "accuracy" ;
+    :type "real" .
+
+col:Heading a :HeadingColumn ;
+    :defines <http://sensorml.com/ont/swe/property/HeadingAngle> ;
+    :description "Heading at this point" ;
+    :name "heading" ;
+    :type "real" ;
+    :unit [ a <http://purl.obolibrary.org/obo/UO_0000123> ] . # TODO: degrees!
+
+col:Purpose a :PurposeColumn ;
+    :defines <http://purl.org/dc/terms/type> ; # TODO: definition!
+    :description "Purpose of the trip" ;
+    :name "purpose" ;
+    :type "string" .
+
+col:CurrentSpeed a :CurrentSpeedColumn ;
+    :defines <http://sensorml.com/ont/swe/property/MeanMotion> ;
+    :description "Speed at this point" ;
+    :name "current_speed" ;
+    :type "real" ;
+    :unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#KilometerPerHour> ] .
+
+col:TransportMode a :TransportModeColumn ;
+    :defines <http://purl.org/dc/terms/type> ; # TODO: definition!
+    :description "Transport mode of the trip" ;
+    :name "transportmode" ;
+    :type "string" .
+
+col:StartTime a :StartTimeColumn ;
+    :defines <http://purl.org/dc/terms/date> ;
+    :description "Start time of the trip" ;
+    :name "starttime" ;
+    :type "datetime" .
+
+col:StopTime a :StopTimeColumn ;
+    :defines <http://purl.org/dc/terms/date> ;
+    :description "End time" ;
+    :name "stoptime" ;
+    :type "datetime" .
+
+col:CurrentTime a :CurrentTimeColumn ;
+    :defines <http://purl.org/dc/terms/date> ;
+    :description "Time at this point" ;
+    :name "time" ;
+    :type "datetime" .
+
+col:CurrentLocation a :CurrentLocationColumn ;
+    :defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+    :description "Location at this point" ;
+    :name "location" ;
+    :type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+col:TripId a :TripIdColumn ;
+    :defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+    :description "Identifier of the trip" ;
+    :name "trip_id" ;
+    :type "string" .
+
+col:DestinationAddress a :DestinationAddressColumn ;
+    :defines <http://purl.org/dc/terms/Location> ;
+    :description "Destination address of the trip" ;
+    :name "destination_address" ;
+    :type "string" .
+    
+col:OriginAddress a :OriginAddressColumn ;
+    :defines <http://purl.org/dc/terms/Location> ;
+    :description "Origin address of the trip" ;
+    :name "origin_address" ;
+    :type "string" .
+
+col:Title a :TitleColumn ;
+    :defines <http://purl.org/dc/terms/title> ;
+    :description "Name given to the trip by the user" ;
+    :name "title" ;
+    :type "string" .
+
+col:AverageSpeed a :AverageSpeedColumn ;
+    :defines <http://sensorml.com/ont/swe/property/MeanMotion> ;
+    :description "Average speed of the trip" ;
+    :name "speed" ;
+    :type "real" ;
+    :unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#KilometerPerHour> ] .
+
+col:TotalDistance a :TotalDistanceColumn ;
+    :defines <http://purl.org/dc/terms/SizeOrDuration> ;
+    :description "Distance covered in the trip" ;
+    :name "distance" ;
+    :type "real" ;
+    :unit [ a <http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Kilometer> ] .
+
+col:OriginLocation a :OriginLocationColumn ;
+    :defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+    :description "Origin of the trip" ;
+    :name "origin_location" ;
+    :type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+col:DestinationLocation a :DestinationLocationColumn ;
+    :defines <http://www.w3.org/2003/01/geo/wgs84_pos#Point> ;
+    :description "Destination of the trip" ;
+    :name "destination_location" ;
+    :type "http://move.ugent.be/geodata/ontology/PointFeature" .
+
+col:RouteId a :RouteIdColumn ;
+    :defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+    :description "Identifier of the route" ;
+    :name "route_id" ;
+    :type "string" .
+
+col:Itinerary a :ItineraryColumn ;
+    :defines <http://geovocab.org/geometry.html#LineString> ;
+    :description "Itinerary of the trip" ;
+    :name "itinerary" ;
+    :type "http://move.ugent.be/geodata/ontology/LineFeature" .
+
+col:UserId a :UserIdColumn ;
+    :defines <http://sensorml.com/ont/swe/property/ObjectOfInterestIdentifier> ;
+    :description "Identifier of the user" ;
+    :name "user_id" ;
+    :type "string" .
