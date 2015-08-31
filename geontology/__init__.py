@@ -52,6 +52,7 @@ class GeoOntology:
         :param name: Name of the column.
         :param type: Type of the column. Check the ontology for the list of possibilities
         :param desc: Description of the column.
+        :param unit: Unit of the column.
         :return:
         """
         col = URIRef(self.column_ns + name)
@@ -62,11 +63,8 @@ class GeoOntology:
         self.graph.add((col, self.property_ns.defines, URIRef(defines)))
         self.graph.add((col, self.property_ns.description, Literal(desc)))
         self.graph.add((col, self.property_ns.type, Literal(type)))
-
-        if unit is not None:
-            unit_instance = BNode()
-            self.graph.add((unit_instance, RDF.type, URIRef(unit)))
-            self.graph.add((col, self.property_ns.unit, unit_instance))
+        if unit:
+            self.graph.add((col, self.property_ns.unit, Literal(unit)))
 
     def add_geo_column(self, defines, name='column', field1=None, field2=None,
                        type='LineFeature', desc='No description'):
