@@ -124,7 +124,7 @@ class GeoOntology:
 
         return result
 
-    def set_fields(self, column, field=None, field1=None, field2=None):
+    def set_fields(self, column, field=None, field1=None, field2=None, unit=None):
         if column.startswith(_GEO_NAMESPACE):
             # Name space is already included in the name
             col_ref = URIRef(column)
@@ -133,8 +133,12 @@ class GeoOntology:
 
         if field is not None:
             self.graph.add((col_ref, self.property_ns.field, Literal(field)))
+            if unit:
+                self.graph.add((col_ref, self.property_ns.unit, Literal(unit)))
         elif field1 is not None and field2 is not None:
             self.graph.add((col_ref, self.property_ns.field1, Literal(field1)))
             self.graph.add((col_ref, self.property_ns.field2, Literal(field2)))
+            if unit:
+                self.graph.add((col_ref, self.property_ns.unit, Literal(unit)))
         else:
             raise AssertionError("If field is none, field1 and field2 should not be none")
