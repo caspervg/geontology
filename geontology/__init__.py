@@ -127,7 +127,7 @@ class GeoOntology:
             # Name space is already included in the name
             col_ref = URIRef(column)
         else:
-            col_ref = URIRef(_GEO_NAMESPACE + "column#" + column)
+            col_ref = URIRef(_GEO_NAMESPACE + "column/" + column)
 
         if field is not None:
             self.graph.add((col_ref, self.property_ns.field, Literal(field)))
