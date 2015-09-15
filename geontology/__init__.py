@@ -35,8 +35,8 @@ class GeoOntology:
         self.graph.parse(path, format=frmt)
         self.frmt = frmt
         self.namespace = Namespace(namespace)
-        self.column_ns = Namespace(namespace + 'column#')
-        self.property_ns = Namespace(namespace + 'property#')
+        self.column_ns = Namespace(namespace + 'column/')
+        self.property_ns = Namespace(namespace + 'property/')
 
         self.featureTypes = {
             'LineFeature': self.namespace.LineFeature,
